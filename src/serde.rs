@@ -7,7 +7,6 @@ use bevy::{
             TypeRegistrationDeserializer,
             TypedReflectDeserializer,
             TypedReflectSerializer,
-            UntypedReflectDeserializer,
         },
         Reflect,
         TypeRegistry,
@@ -16,6 +15,7 @@ use bevy::{
     scene::DynamicEntity,
     utils::HashSet,
 };
+use bevy::reflect::serde::ReflectDeserializer;
 use serde::{
     de::{
         DeserializeSeed,
@@ -652,7 +652,7 @@ impl<'a, 'de> Visitor<'de> for ReflectMapVisitor<'a> {
     {
         let mut dynamic_properties = Vec::new();
         while let Some(entity) =
-            seq.next_element_seed(UntypedReflectDeserializer::new(self.registry))?
+            seq.next_element_seed(ReflectDeserializer::new(self.registry))?
         {
             dynamic_properties.push(entity);
         }

@@ -38,7 +38,7 @@ impl<'a> SnapshotBuilder<'a> {
     /// # let mut app = App::new();
     /// # app.add_plugins(MinimalPlugins);
     /// # app.add_plugins(SavePlugins);
-    /// # let world = &mut app.world;
+    /// # let world = &mut app.world_mut();
     /// SnapshotBuilder::snapshot(world)
     ///     // Extract all matching entities and resources
     ///     .extract_all()
@@ -73,7 +73,7 @@ impl<'a> SnapshotBuilder<'a> {
     /// # let mut app = App::new();
     /// # app.add_plugins(MinimalPlugins);
     /// # app.add_plugins(SavePlugins);
-    /// # let world = &mut app.world;
+    /// # let world = &mut app.world();
     /// SnapshotBuilder::rollback(world)
     ///     // Extract all matching entities and resources
     ///     .extract_all()

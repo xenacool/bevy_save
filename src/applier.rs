@@ -9,7 +9,6 @@ use bevy::{
         query::QueryFilter,
         reflect::ReflectMapEntities,
         system::{
-            CommandQueue,
             EntityCommands,
         },
         world::EntityRef,
@@ -18,7 +17,7 @@ use bevy::{
     scene::SceneSpawnError,
     utils::HashMap,
 };
-
+use bevy::ecs::world::CommandQueue;
 use crate::{
     Error,
     Snapshot,
@@ -34,7 +33,7 @@ use crate::{
 /// # let mut app = App::new();
 /// # app.add_plugins(MinimalPlugins);
 /// # app.add_plugins(SavePlugins);
-/// # let world = &mut app.world;
+/// # let world = &mut app.world_mut();
 /// # let snapshot = Snapshot::from_world(world);
 /// # let parent = world.spawn_empty().id();
 /// snapshot
@@ -151,7 +150,7 @@ impl<'a, F: QueryFilter> SnapshotApplier<'a, F> {
 
             // If the world already contains an instance of the given resource
             // just apply the (possibly) new value, otherwise insert the resource
-            reflect_resource.apply_or_insert(self.world, &**resource);
+            reflect_resource.apply_or_insert(self.world, &**resource, &*type_registry);
         }
 
         // Despawn entities
