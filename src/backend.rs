@@ -40,12 +40,11 @@ mod desktop {
             BufWriter,
         },
     };
-
+    use std::path::PathBuf;
     use bevy::prelude::*;
 
     #[allow(clippy::wildcard_imports)]
     use super::*;
-    use crate::get_save_file;
 
     /// Simple filesystem backend.
     ///
@@ -56,8 +55,8 @@ mod desktop {
     pub struct FileIO;
 
     impl<K: std::fmt::Display> Backend<K> for FileIO {
-        fn save<F: Format, T: Serialize>(&self, key: K, value: &T) -> Result<(), Error> {
-            let path = get_save_file(format!("{key}{}", F::extension()));
+        fn save<F: Format, T: Serialize>(&self, root_path: K, value: &T) -> Result<(), Error> {
+            let path = PathBuf::from(format!("{root_path}{}", F::extension()));
             let dir = path.parent().expect("Invalid save directory");
 
             std::fs::create_dir_all(dir)?;
@@ -70,10 +69,10 @@ mod desktop {
 
         fn load<F: Format, S: for<'de> DeserializeSeed<'de, Value = T>, T>(
             &self,
-            key: K,
+            root_path: K,
             seed: S,
         ) -> Result<T, Error> {
-            let path = get_save_file(format!("{key}{}", F::extension()));
+            let path = format!("{root_path}{}", F::extension());
             let file = File::open(path)?;
             let reader = BufReader::new(file);
 

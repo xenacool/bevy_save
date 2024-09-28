@@ -14,7 +14,6 @@ pub use crate::{
     backend::*,
     builder::*,
     clone::*,
-    dir::*,
     error::*,
     format::*,
     middleware::*,
@@ -32,7 +31,6 @@ mod applier;
 mod backend;
 mod builder;
 mod clone;
-mod dir;
 mod error;
 mod format;
 mod middleware;
@@ -52,7 +50,6 @@ pub mod prelude {
         backend::*,
         builder::*,
         clone::*,
-        dir::*,
         format::*,
         middleware::*,
         pipeline::*,
